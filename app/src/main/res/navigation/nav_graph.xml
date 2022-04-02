@@ -16,6 +16,9 @@
         <action
             android:id="@+id/gym_list_to_session_list"
             app:destination="@id/session_listFragment" />
+        <argument
+            android:name="sessionList_gymId"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/gym_formFragment"
@@ -30,12 +33,20 @@
         android:id="@+id/session_listFragment"
         android:name="dev.tomlovelady.lifttracker.fragments.SessionListFragment"
         android:label="fragment_sessionListFragment">
-        <action
-            android:id="@+id/gym_list_to_session_list"
-            app:destination="@id/session_listFragment" />
         <argument
             android:name="sessionList_gymId"
             app:argType="long" />
+        <action
+            android:id="@+id/session_list_to_session_form_create"
+            app:destination="@id/session_formFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/session_formFragment"
+        android:name="dev.tomlovelady.lifttracker.fragments.SessionFormFragment"
+        android:label="fragment_sessionFormFragment">
+        <action
+            android:id="@+id/session_form_to_session_list_create"
+            app:destination="@id/session_listFragment" />
     </fragment>
 
 </navigation>
