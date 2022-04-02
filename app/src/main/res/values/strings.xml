@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LiftTracker</string>
+    <string name="add_gym">Add Gym</string>
+    <string name="hint_word">Gym...</string>
+    <string name="button_save">Save</string>
+    <string name="empty_not_saved">Item not saved because it is empty</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_session">Add Session</string>
+</resources>

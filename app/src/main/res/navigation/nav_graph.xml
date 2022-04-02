@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com//tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/gym_listFragment">
+
+    <fragment
+        android:id="@+id/gym_listFragment"
+        android:name="dev.tomlovelady.lifttracker.fragments.GymListFragment"
+        android:label="fragment_gymListFragment"
+        tools:layout="@layout/fragment_gym_list">
+        <action
+            android:id="@+id/gym_list_to_form_create"
+            app:destination="@id/gym_formFragment" />
+        <action
+            android:id="@+id/gym_list_to_session_list"
+            app:destination="@id/session_listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gym_formFragment"
+        android:name="dev.tomlovelady.lifttracker.fragments.GymFormFragment"
+        android:label="fragment_gymFormFragment"
+        tools:layout="@layout/fragment_gym_form">
+        <action
+            android:id="@+id/gym_form_to_list_create"
+            app:destination="@id/gym_listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/session_listFragment"
+        android:name="dev.tomlovelady.lifttracker.fragments.SessionListFragment"
+        android:label="fragment_sessionListFragment">
+        <action
+            android:id="@+id/gym_list_to_session_list"
+            app:destination="@id/session_listFragment" />
+        <argument
+            android:name="sessionList_gymId"
+            app:argType="long" />
+    </fragment>
+
+</navigation>
