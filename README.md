@@ -14,14 +14,9 @@ Written in Kotlin attempting to follow current best practice wherever possible
 
 ## Feature checklist
 
-[x] Gym CRUD layer
-
-[-] Session CRUD layer
-
-[ ] Movement CRUD layer
-
-[ ] Reporting
-
-[ ] Data export
-
-[ ] Play store upload
+- [x] Gym CRUD layer
+- [ ] Session CRUD layer
+- [ ] Movement CRUD layer
+- [ ] Reporting
+- [ ] Data export
+- [ ] Play store upload
