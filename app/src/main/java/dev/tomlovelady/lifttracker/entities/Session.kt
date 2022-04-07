@@ -1,11 +1,10 @@
 package dev.tomlovelady.lifttracker.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "session_table")
-class Session(@PrimaryKey val sessionId: Long,
-              @Embedded val gym: Gym,
-              @ColumnInfo(name = "datetime") val datetime: Long)
+class Session(@PrimaryKey(autoGenerate = true) val sessionId: Long,
+              @ColumnInfo(name = "gymId") val gymId: Long,
+              @ColumnInfo(name = "startedAt") val startedAt: Long,
+              @ColumnInfo(name = "finishedAt") val finishedAt: Long?
+)

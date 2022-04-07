@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import dev.tomlovelady.lifttracker.LiftTrackerApplication
 import dev.tomlovelady.lifttracker.R
 import dev.tomlovelady.lifttracker.entities.Gym
 import dev.tomlovelady.lifttracker.fragments.GymListFragmentDirections
@@ -35,7 +36,7 @@ class GymListAdapter : ListAdapter<Gym, GymListAdapter.GymViewHolder>(GymCompara
 
             itemView.setOnClickListener {
                 itemView.findNavController().navigate(GymListFragmentDirections.gymListToSessionList(
-                    gymId!!
+                    gymId!!,
                 ))
             }
         }

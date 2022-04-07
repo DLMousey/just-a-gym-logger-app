@@ -10,22 +10,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import dev.tomlovelady.lifttracker.LiftTrackerApplication
 import dev.tomlovelady.lifttracker.R
+import dev.tomlovelady.lifttracker.entities.Gym
 import dev.tomlovelady.lifttracker.repositories.GymRepository
+import dev.tomlovelady.lifttracker.viewmodels.GymViewModel
+import dev.tomlovelady.lifttracker.viewmodels.GymViewModelFactory
 
-/**
- * A simple [Fragment] subclass.
- * Use the [GymFormFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class GymFormFragment : Fragment() {
 
     private lateinit var editNameView: EditText
     private lateinit var editAddressView: EditText
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val gymViewModel: GymViewModel by viewModels {
+        GymViewModelFactory((activity?.application as LiftTrackerApplication).gymRepository)
     }
 
     override fun onCreateView(
@@ -43,32 +43,22 @@ class GymFormFragment : Fragment() {
             val emptyName = TextUtils.isEmpty(editNameView.text)
             val emptyAddress = TextUtils.isEmpty(editAddressView.text)
 
+            val repo = (activity?.application as LiftTrackerApplication).gymRepository
+
             if (emptyName || emptyAddress) {
                 Toast.makeText(context, "Name and address are required", Toast.LENGTH_SHORT).show()
             } else {
                 val name = editNameView.text.toString()
                 val address = editAddressView.text.toString()
 
-                val bundle = bundleOf("newGym" to "$name|$address")
-                view.findNavController().navigate(R.id.gym_form_to_list_create, bundle)
+                val gym = Gym(0, name, address)
+                gymViewModel.insert(gym)
+
+                Toast.makeText(context, "New gym: '${name}' added succesfully", Toast.LENGTH_SHORT).show()
+                it.findNavController().navigate(R.id.gym_form_to_list_create)
             }
         }
 
         return view
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GymFormFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance() =
-            GymFormFragment()
     }
 }

@@ -7,6 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import dev.tomlovelady.lifttracker.daos.GymDao
+import dev.tomlovelady.lifttracker.daos.MovementDao
 import dev.tomlovelady.lifttracker.daos.SessionDao
 //import dev.tomlovelady.lifttracker.daos.MovementDao
 //import dev.tomlovelady.lifttracker.daos.SessionDao
@@ -18,11 +19,11 @@ import dev.tomlovelady.lifttracker.entities.Set
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Gym::class, Session::class], version = 4, exportSchema = false)
+@Database(entities = [Gym::class, Session::class, Movement::class], version = 2, exportSchema = false)
 public abstract class LiftTrackerDatabase : RoomDatabase() {
 
     abstract fun gymDao(): GymDao
-//    abstract fun movementDao(): MovementDao
+    abstract fun movementDao(): MovementDao
     abstract fun sessionDao(): SessionDao
 //    abstract fun setDao(): SetDao
 

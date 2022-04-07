@@ -1,27 +1,33 @@
 package dev.tomlovelady.lifttracker.fragments
 
-import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Visibility
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dev.tomlovelady.lifttracker.LiftTrackerApplication
 import dev.tomlovelady.lifttracker.R
 import dev.tomlovelady.lifttracker.adapters.SessionListAdapter
+import dev.tomlovelady.lifttracker.entities.Gym
 import dev.tomlovelady.lifttracker.entities.Session
 import dev.tomlovelady.lifttracker.viewmodels.SessionViewModel
 import dev.tomlovelady.lifttracker.viewmodels.SessionViewModelFactory
-import kotlinx.coroutines.flow.count
 
 class SessionListFragment : Fragment() {
+
+    private lateinit var gym: Gym
 
     private val args: SessionListFragmentArgs by navArgs()
 
@@ -31,36 +37,67 @@ class SessionListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.title = "Gym Sessions List"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.fragment_session_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val application = (activity?.application as LiftTrackerApplication)
 
-        val repository = (activity?.application as LiftTrackerApplication)
-            .sessionRepository
+        application.gymRepository.findGymById(args.sessionListGymId).asLiveData().observe(
+            viewLifecycleOwner, Observer<Gym> {
+                gym = it
+            }
+        )
 
-        val count = repository.countSessionsByGym(args.sessionListGymId).asLiveData().value
-        if (count == 0 || count == null) {
-            view.findViewById<TextView>(R.id.textview_sessionList_empty).visibility = View.VISIBLE
-            return
+        val emptyText = view.findViewById<TextView>(R.id.textview_sessionList_empty)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview_sessionList)
+
+        application.sessionRepository.countSessionsByGym(args.sessionListGymId)
+            .asLiveData()
+            .observe(
+            viewLifecycleOwner
+        ) {
+            when (it) {
+                0 -> {
+                    Log.d("SessionListFragment", "onViewCreated: Session count change to 0, hiding list, showing empty")
+                    recyclerView.visibility = View.GONE
+                    emptyText.visibility = View.VISIBLE
+                }
+                else -> {
+                    Log.d("SessionListFragment", "onViewCreated: Session count changed to ${it}, showing list, hiding empty")
+                    recyclerView.visibility = View.VISIBLE
+                    emptyText.visibility = View.GONE
+                }
+            }
         }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview_sessionList)
         val adapter = SessionListAdapter()
 
-        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
 
-        val sessions = (activity?.application as LiftTrackerApplication)
-            .sessionRepository.findSessionsByGym(args.sessionListGymId)
+        sessionViewModel.loadSessionsForGym(args.sessionListGymId)
+        sessionViewModel.currentSessions.observe(viewLifecycleOwner, Observer<List<Session>> {
+            sessionList -> sessionList?.let { adapter.submitList(it) }
+        })
 
-        sessionViewModel.allSessions = sessions.asLiveData()
+        val fab = view.findViewById<FloatingActionButton>(R.id.fab_sessionList)
+        fab.setOnClickListener {
+            val now: Long = System.currentTimeMillis() / 1000L
+            val session = Session(0, args.sessionListGymId, now, null)
+
+            sessionViewModel.insert(session)
+            Toast.makeText(context, "Created a new session at ${gym.name}", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     companion object {

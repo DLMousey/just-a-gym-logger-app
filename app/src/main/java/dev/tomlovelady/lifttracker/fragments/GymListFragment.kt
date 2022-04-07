@@ -1,42 +1,26 @@
 package dev.tomlovelady.lifttracker.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dev.tomlovelady.lifttracker.LiftTrackerApplication
 import dev.tomlovelady.lifttracker.R
 import dev.tomlovelady.lifttracker.adapters.GymListAdapter
-import dev.tomlovelady.lifttracker.entities.Gym
 import dev.tomlovelady.lifttracker.viewmodels.GymViewModel
 import dev.tomlovelady.lifttracker.viewmodels.GymViewModelFactory
 
-/**
- * A simple [Fragment] subclass.
- * Use the [GymListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class GymListFragment : Fragment() {
 
-//    private val args by navArgs<GymListFragmentArgs>()
-
-    private val newGymActivityRequestCode = 1
     private val gymViewModel: GymViewModel by viewModels {
         GymViewModelFactory((activity?.application as LiftTrackerApplication).gymRepository)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -62,31 +46,5 @@ class GymListFragment : Fragment() {
         }
 
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val newGym = arguments?.getString("newGym") ?: return
-
-        val parts = newGym.split("|")
-        val gym: Gym = Gym(0, parts[0], parts[1])
-
-        gymViewModel.insert(gym)
-
-        Toast.makeText(context, "'${gym.name}' saved successfully", Toast.LENGTH_SHORT).show()
-        Log.d("GymListFragment:onViewCreated", "received argument 'newGym' with value: " + newGym)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment GymListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance() =
-            GymListFragment()
     }
 }

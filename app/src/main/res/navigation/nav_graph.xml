@@ -16,9 +16,6 @@
         <action
             android:id="@+id/gym_list_to_session_list"
             app:destination="@id/session_listFragment" />
-        <argument
-            android:name="sessionList_gymId"
-            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/gym_formFragment"

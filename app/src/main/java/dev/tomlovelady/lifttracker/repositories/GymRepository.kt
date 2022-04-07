@@ -14,4 +14,8 @@ class GymRepository(private val gymDao: GymDao) {
     suspend fun insert(gym: Gym) {
         gymDao.insert(gym)
     }
+
+    fun findGymById(gymId: Long): Flow<Gym> {
+        return gymDao.getGym(gymId)
+    }
 }

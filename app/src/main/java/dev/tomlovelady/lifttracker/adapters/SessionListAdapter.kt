@@ -1,5 +1,6 @@
 package dev.tomlovelady.lifttracker.adapters
 
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.tomlovelady.lifttracker.R
 import dev.tomlovelady.lifttracker.entities.Session
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SessionListAdapter : ListAdapter<Session, SessionListAdapter.SessionViewHolder>(SessionComparator()) {
 
@@ -18,15 +21,14 @@ class SessionListAdapter : ListAdapter<Session, SessionListAdapter.SessionViewHo
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current.datetime.toString())
+        holder.bind(Date(current.startedAt))
     }
-
 
     class SessionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val sessionItemView: TextView = itemView.findViewById(R.id.recyclerview_session_item_name)
 
-        fun bind(text: String?) {
-            sessionItemView.text = text
+        fun bind(date: Date) {
+            sessionItemView.text = DateFormat.format("dd/MM/yyyy hh:mm:ss a", date)
         }
 
         companion object {
