@@ -1,61 +1,71 @@
 package dev.tomlovelady.lifttracker.fragments
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import dev.tomlovelady.lifttracker.LiftTrackerApplication
+import androidx.fragment.app.setFragmentResult
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dev.tomlovelady.lifttracker.R
-import dev.tomlovelady.lifttracker.entities.Gym
-import dev.tomlovelady.lifttracker.repositories.GymRepository
-import dev.tomlovelady.lifttracker.viewmodels.GymViewModel
-import dev.tomlovelady.lifttracker.viewmodels.GymViewModelFactory
 
-class GymFormFragment : Fragment() {
+class GymFormFragment : BottomSheetDialogFragment() {
 
     private lateinit var editNameView: EditText
     private lateinit var editAddressView: EditText
+    private lateinit var editTypeView: EditText
 
-    private val gymViewModel: GymViewModel by viewModels {
-        GymViewModelFactory((activity?.application as LiftTrackerApplication).gymRepository)
+    // Apparently calling setContentView on dialog is a restricted API? not a clue.
+    @SuppressLint("RestrictedApi")
+    override fun setupDialog(dialog: Dialog, style: Int) {
+        super.setupDialog(dialog, style)
+
+        val view: View = LayoutInflater.from(context).inflate(R.layout.fragment_gym_form, null)
+        dialog.setContentView(view)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.title = "Add a Gym"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_gym_form, container, false)
 
         editNameView = view.findViewById(R.id.edit_name)
+        editTypeView = view.findViewById(R.id.edit_type)
         editAddressView = view.findViewById(R.id.edit_address)
 
         val button = view.findViewById<Button>(R.id.button_save)
         button.setOnClickListener {
             val emptyName = TextUtils.isEmpty(editNameView.text)
             val emptyAddress = TextUtils.isEmpty(editAddressView.text)
-
-            val repo = (activity?.application as LiftTrackerApplication).gymRepository
+            val emptyType = TextUtils.isEmpty(editTypeView.text)
 
             if (emptyName || emptyAddress) {
                 Toast.makeText(context, "Name and address are required", Toast.LENGTH_SHORT).show()
             } else {
                 val name = editNameView.text.toString()
+                val type = if (emptyType) "General Gym" else editNameView.text.toString()
                 val address = editAddressView.text.toString()
 
-                val gym = Gym(0, name, address)
-                gymViewModel.insert(gym)
+                setFragmentResult("newGym", bundleOf("gym" to "${name}|${type}|${address}"))
 
-                Toast.makeText(context, "New gym: '${name}' added succesfully", Toast.LENGTH_SHORT).show()
-                it.findNavController().navigate(R.id.gym_form_to_list_create)
+                editNameView.text = null
+                editTypeView.text = null
+                editAddressView.text = null
+
+                dialog?.dismiss()
             }
         }
 

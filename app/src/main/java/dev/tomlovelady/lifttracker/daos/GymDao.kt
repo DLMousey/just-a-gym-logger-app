@@ -13,12 +13,15 @@ interface GymDao {
     @Query("SELECT * FROM gym_table WHERE gymId=:id")
     fun getGym(id: Long): Flow<Gym>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(gym: Gym)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(gym: Gym): Long
 
 //    @Update
 //    suspend fun update(gym: Gym)
 
     @Query("DELETE FROM gym_table")
     fun deleteAll()
+
+    @Delete
+    fun deleteGym(gym: Gym)
 }

@@ -13,6 +13,10 @@ class GymViewModel(private val repository: GymRepository) : ViewModel() {
     fun insert(gym: Gym) = viewModelScope.launch {
         repository.insert(gym)
     }
+
+    fun delete(gym: Gym) = viewModelScope.launch {
+        repository.deleteGym(gym)
+    }
 }
 
 class GymViewModelFactory(private val repository: GymRepository) : ViewModelProvider.Factory {

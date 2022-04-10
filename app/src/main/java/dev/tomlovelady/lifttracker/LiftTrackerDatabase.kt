@@ -19,8 +19,8 @@ import dev.tomlovelady.lifttracker.entities.Set
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Gym::class, Session::class, Movement::class], version = 2, exportSchema = false)
-public abstract class LiftTrackerDatabase : RoomDatabase() {
+@Database(entities = [Gym::class, Session::class, Movement::class], version = 4, exportSchema = false)
+abstract class LiftTrackerDatabase : RoomDatabase() {
 
     abstract fun gymDao(): GymDao
     abstract fun movementDao(): MovementDao
@@ -41,30 +41,12 @@ public abstract class LiftTrackerDatabase : RoomDatabase() {
                     LiftTrackerDatabase::class.java,
                     "lift_tracker_database"
                 ).fallbackToDestructiveMigration()
-                    .addCallback(LiftTrackerDatabaseCallback(scope))
+                    .allowMainThreadQueries()
                     .build()
 
                 INSTANCE = instance
                 instance
             }
-        }
-    }
-
-    private class LiftTrackerDatabaseCallback(
-        private val scope: CoroutineScope
-    ) : RoomDatabase.Callback() {
-
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            INSTANCE?.let { database ->
-                scope.launch {
-                    populateDatabase(database.gymDao())
-                }
-            }
-        }
-
-        suspend fun populateDatabase(gymDao: GymDao) {
-            // Do nothing
         }
     }
 }

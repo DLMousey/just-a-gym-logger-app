@@ -60,6 +60,7 @@ dependencies {
     // UI
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
+    implementation "androidx.cardview:cardview:1.0.0"
 
     // Fragments + Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
