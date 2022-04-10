@@ -13,4 +13,9 @@
     <string name="gymList_start_session_button">Start Session</string>
     <string name="gymList_view_sessions_button">View Sessions</string>
     <string name="gymList_add_gym_button">Add a gym</string>
+
+    <!-- Gym Form Fragment Strings -->
+    <string name="gymForm_name_input_hint">Gym name</string>
+    <string name="gymForm_type_input_hint">Gym type (e.g. "Powerlifting")</string>
+    <string name="gymForm_address_input_hint">Address</string>
 </resources>

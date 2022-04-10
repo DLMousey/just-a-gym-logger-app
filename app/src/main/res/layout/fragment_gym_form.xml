@@ -6,8 +6,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Gym Name">
-        <EditText
+        android:hint="@string/gymForm_name_input_hint">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -15,13 +15,14 @@
             android:fontFamily="sans-serif-light"
             android:inputType="textAutoComplete"
             android:layout_margin="@dimen/big_padding"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Gym Type (eg. 'Powerlifting')">
-        <EditText
+        android:hint="@string/gymForm_type_input_hint">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,13 +30,14 @@
             android:fontFamily="sans-serif-light"
             android:inputType="textAutoComplete"
             android:layout_margin="@dimen/big_padding"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:importantForAutofill="no"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Address">
-        <EditText
+        android:hint="@string/gymForm_address_input_hint">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +45,8 @@
             android:fontFamily="sans-serif-light"
             android:inputType="textAutoComplete"
             android:layout_margin="@dimen/big_padding"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

@@ -14,13 +14,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.textfield.TextInputEditText
 import dev.tomlovelady.lifttracker.R
 
 class GymFormFragment : BottomSheetDialogFragment() {
 
-    private lateinit var editNameView: EditText
-    private lateinit var editAddressView: EditText
-    private lateinit var editTypeView: EditText
+    private lateinit var editNameView: TextInputEditText
+    private lateinit var editAddressView: TextInputEditText
+    private lateinit var editTypeView: TextInputEditText
 
     // Apparently calling setContentView on dialog is a restricted API? not a clue.
     @SuppressLint("RestrictedApi")
